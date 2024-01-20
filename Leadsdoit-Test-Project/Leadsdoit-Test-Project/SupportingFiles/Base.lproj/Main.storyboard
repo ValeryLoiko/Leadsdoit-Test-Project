@@ -177,9 +177,7 @@
                         <outlet property="add" destination="RDy-X1-krt" id="ery-Ai-U3v"/>
                         <outlet property="calendar" destination="cf0-CR-9S2" id="PPe-J7-dai"/>
                         <outlet property="dateLabel" destination="ROc-ya-pqq" id="hnS-An-L5f"/>
-                        <outlet property="filetrCameraLabel" destination="4fh-Lx-adr" id="92z-BB-j2m"/>
                         <outlet property="filterCamera" destination="4fh-Lx-adr" id="LPM-gL-98J"/>
-                        <outlet property="marsCameraLabel" destination="scD-oo-dcs" id="Bb9-GF-YpG"/>
                         <outlet property="roverCamera" destination="jqS-BF-PIC" id="kXY-pI-ML5"/>
                         <outlet property="tableView" destination="rQy-ER-GNU" id="sdD-Z9-qGU"/>
                     </connections>

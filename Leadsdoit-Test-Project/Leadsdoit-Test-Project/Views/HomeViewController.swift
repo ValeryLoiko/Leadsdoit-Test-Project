@@ -18,13 +18,34 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var add: UIView!
     @IBOutlet weak var tableView: UITableView!
     
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-      
+        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
+        tableView.dataSource = self
+        tableView.delegate = self
     }
-
-
 }
 
+
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+       return 5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as? HomeTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.configure(imageURL: "star", roverText: "Curiosity", cameraText: "Front Hazard Avoidance Camera", dateText: "June 6, 2019")
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
+    }
+    
+    
+}
