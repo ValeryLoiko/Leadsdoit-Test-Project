@@ -11,6 +11,9 @@
 		84490C3B2B57347200E64212 /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84490C392B57347100E64212 /* SF-Pro.ttf */; };
 		84490C402B5736B200E64212 /* UIFont+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84490C3F2B5736B200E64212 /* UIFont+Ext.swift */; };
 		8453BD602B5A88CA002D5986 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453BD5F2B5A88CA002D5986 /* HomeTableViewCell.swift */; };
+		8453BD622B5D4801002D5986 /* MarsCameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453BD612B5D4801002D5986 /* MarsCameraModel.swift */; };
+		8453BD642B5D49F2002D5986 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453BD632B5D49F2002D5986 /* ApiManager.swift */; };
+		8478C8812B5EB3B8009E71ED /* MarsPhotoCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8478C8802B5EB3B8009E71ED /* MarsPhotoCellModel.swift */; };
 		84B003A72B56D20000F07C9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B003A62B56D20000F07C9B /* AppDelegate.swift */; };
 		84B003A92B56D20000F07C9B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B003A82B56D20000F07C9B /* SceneDelegate.swift */; };
 		84B003AB2B56D20000F07C9B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B003AA2B56D20000F07C9B /* HomeViewController.swift */; };
@@ -23,6 +26,9 @@
 		84490C392B57347100E64212 /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro.ttf"; sourceTree = "<group>"; };
 		84490C3F2B5736B200E64212 /* UIFont+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Ext.swift"; sourceTree = "<group>"; };
 		8453BD5F2B5A88CA002D5986 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		8453BD612B5D4801002D5986 /* MarsCameraModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarsCameraModel.swift; sourceTree = "<group>"; };
+		8453BD632B5D49F2002D5986 /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
+		8478C8802B5EB3B8009E71ED /* MarsPhotoCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarsPhotoCellModel.swift; sourceTree = "<group>"; };
 		84B003A32B56D20000F07C9B /* Leadsdoit-Test-Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Leadsdoit-Test-Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B003A62B56D20000F07C9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84B003A82B56D20000F07C9B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -48,6 +54,7 @@
 		84490C2F2B572E8C00E64212 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				8453BD632B5D49F2002D5986 /* ApiManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -79,6 +86,8 @@
 		848206632B587CDC0014126C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8453BD612B5D4801002D5986 /* MarsCameraModel.swift */,
+				8478C8802B5EB3B8009E71ED /* MarsPhotoCellModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -229,8 +238,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				84490C402B5736B200E64212 /* UIFont+Ext.swift in Sources */,
+				8478C8812B5EB3B8009E71ED /* MarsPhotoCellModel.swift in Sources */,
 				8453BD602B5A88CA002D5986 /* HomeTableViewCell.swift in Sources */,
 				84B003AB2B56D20000F07C9B /* HomeViewController.swift in Sources */,
+				8453BD642B5D49F2002D5986 /* ApiManager.swift in Sources */,
+				8453BD622B5D4801002D5986 /* MarsCameraModel.swift in Sources */,
 				84B003A72B56D20000F07C9B /* AppDelegate.swift in Sources */,
 				84B003A92B56D20000F07C9B /* SceneDelegate.swift in Sources */,
 			);

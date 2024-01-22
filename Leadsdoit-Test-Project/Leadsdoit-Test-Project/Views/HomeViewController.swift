@@ -18,6 +18,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var add: UIView!
     @IBOutlet weak var tableView: UITableView!
     
+    //MARK: - Private properties
+    var marsData: [MarsPhotoCellModel] = []
    
     
     override func viewDidLoad() {
@@ -26,20 +28,45 @@ class HomeViewController: UIViewController {
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
         tableView.dataSource = self
         tableView.delegate = self
+    
+        // Вызываем метод fetchMarsPhotos из ApiManager
+          ApiManager.fetchMarsPhotos { [weak self] marsCamera in
+
+              DispatchQueue.main.async {
+                  if let marsCamera = marsCamera {
+                      self?.marsData = marsCamera.photos.map { photo in
+                          return MarsPhotoCellModel(
+                            roverName: photo.rover.name.rawValue,
+                            cameraName: photo.camera.fullName.rawValue,
+                            earthDate: photo.earthDate,
+                            imageUrl: photo.imgSrc)
+                      }
+                      print("Right")
+                      DispatchQueue.main.async {
+                          self?.tableView.reloadData()
+                      }
+                  } else {
+                      // Произошла ошибка при получении данных
+                      print("Ошибка при получении данных о фотографиях на Марсе.")
+                  }
+              }
+          }
+    
     }
 }
 
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return 5
+        return marsData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as? HomeTableViewCell else {
             return UITableViewCell()
         }
-        cell.configure(imageURL: "star", roverText: "Curiosity", cameraText: "Front Hazard Avoidance Camera", dateText: "June 6, 2019")
+        let photoModel = marsData[indexPath.row]
+        cell.configure(imageURLLL: photoModel.imageUrl, roverText: photoModel.roverName, cameraText: photoModel.cameraName, dateText: photoModel.earthDate)
         return cell
     }
     

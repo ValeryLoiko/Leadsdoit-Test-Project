@@ -67,7 +67,7 @@ class HomeTableViewCell: UITableViewCell {
     }
 
     
-    func configure(imageURL: String, roverText: String, cameraText: String, dateText: String) {
+    func configure(imageURLLL: String, roverText: String, cameraText: String, dateText: String) {
         
          let grayAttributes: [NSAttributedString.Key: Any] = [
              .foregroundColor: UIColor.gray,
@@ -86,12 +86,24 @@ class HomeTableViewCell: UITableViewCell {
          attributedRoverText.append(NSAttributedString(string: roverText, attributes: body2Attributes))
          attributedCameraText.append(NSAttributedString(string: cameraText, attributes: body2Attributes))
          attributedDateText.append(NSAttributedString(string: dateText, attributes: body2Attributes))
+        
+        
+        if let url = URL(string: imageURLLL ) {
+            DispatchQueue.global().async {
+                if let data = try? Data(contentsOf: url),
+                   let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self.cameraImage.image = image
+                    }
+                }
+            }
+        }
 
          roverLabel.attributedText = attributedRoverText
          cameraLabel.attributedText = attributedCameraText
          dateLabel.attributedText = attributedDateText
-
-         cameraImage.image = UIImage(systemName: imageURL)
+         
+       
     }
 }
 
@@ -132,7 +144,7 @@ private extension HomeTableViewCell {
         cameraImage.snp.makeConstraints{
             $0.width.equalTo(130)
             $0.height.equalTo(130)
-            $0.right.equalToSuperview().offset(10)
+            $0.right.equalToSuperview().inset(10)
             $0.top.equalToSuperview().offset(10)
         }
     }
