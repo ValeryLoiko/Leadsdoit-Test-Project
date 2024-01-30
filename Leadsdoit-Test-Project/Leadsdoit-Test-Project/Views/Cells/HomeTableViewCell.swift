@@ -9,6 +9,8 @@ import UIKit
 
 class HomeTableViewCell: UITableViewCell {
     
+    static let identifier = "HomeTableViewCell"
+    
     private lazy var cornerView: UIView = {
        let view = UIView()
        view.layer.cornerRadius = 20
