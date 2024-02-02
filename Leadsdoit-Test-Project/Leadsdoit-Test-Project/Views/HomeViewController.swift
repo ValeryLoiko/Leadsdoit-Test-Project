@@ -22,11 +22,11 @@ class HomeViewController: UIViewController {
     var marsData: [MarsPhotoCellModel] = []
     var roverPickerRowsName: [String] = []
     var cameraPickerRowsName: [String] = []
-
+    
     var viewModel = HomeViewModel()
     
-    private lazy var cameraPicker = viewModel.cameraPickerTapped()
-    private lazy var roverPicker = viewModel.roverPickerTapped()
+    private lazy var cameraPicker = UIPickerView()
+    private lazy var roverPicker = UIPickerView()
     
     
     override func viewDidLoad() {
@@ -36,6 +36,8 @@ class HomeViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         updateDate()
+        cameraView.isUserInteractionEnabled = true
+        roverView.isUserInteractionEnabled = true
         
         ApiManager.fetchMarsPhotos { [weak self] marsCamera in
             
@@ -60,13 +62,10 @@ class HomeViewController: UIViewController {
             }
         }
         
-    
-        
-        
         let cameraTapGesture = UITapGestureRecognizer(target: self, action: #selector(filterCameraTapped))
         cameraView.addGestureRecognizer(cameraTapGesture)
         
-        let roverTapGesture = UITapGestureRecognizer(target: self, action: #selector(roverCameraTapped))
+        let roverTapGesture = UITapGestureRecognizer(target: self, action: #selector(filterRoverTapped))
         roverView.addGestureRecognizer(roverTapGesture)
         
     }
@@ -84,16 +83,33 @@ class HomeViewController: UIViewController {
     }
     
     @objc func filterCameraTapped() {
-        view.addSubview(cameraPicker)
         cameraPicker.dataSource = self
         cameraPicker.delegate = self
         
+        setupPickerContainer(for: cameraPicker, title: "Camera", closeButtonAction: #selector(closeCameraTapped), acceptButtonAction: #selector(acceptCameraTapped))
     }
     
-    @objc func roverCameraTapped() {
-        view.addSubview(roverPicker)
+    @objc func filterRoverTapped() {
         roverPicker.dataSource = self
         roverPicker.delegate = self
+        
+        setupPickerContainer(for: roverPicker, title: "Rover", closeButtonAction: #selector(closeRoverTapped), acceptButtonAction: #selector(acceptRoverTapped))
+    }
+    
+    @objc func closeRoverTapped() {
+        viewModel.closeButtonTapped(pickerView: roverPicker)
+        roverPicker.isHidden = true
+    }
+    @objc func acceptRoverTapped() {
+        viewModel.acceptButtonTapped()
+    }
+    
+    @objc func closeCameraTapped() {
+        viewModel.closeButtonTapped(pickerView: cameraPicker)
+        cameraPicker.isHidden = true
+    }
+    @objc func acceptCameraTapped() {
+        viewModel.acceptButtonTapped()
     }
 }
 
@@ -104,7 +120,7 @@ extension HomeViewController: UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView.isEqual(roverPicker) {
-            return roverPickerRowsName.count 
+            return roverPickerRowsName.count
         } else {
             return cameraPickerRowsName.count
         }
@@ -114,7 +130,7 @@ extension HomeViewController: UIPickerViewDataSource {
 extension HomeViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-      
+        
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {

@@ -13,14 +13,13 @@ class HomeViewModel {
         dateFormatter.dateFormat = "MMMM d, yyyy"
         return dateFormatter.string(from: Date())
     }
+        
+    func closeButtonTapped(pickerView: UIPickerView) {
+        print("close")
+        pickerView.resignFirstResponder()
+    }
     
-       func cameraPickerTapped() -> UIPickerView {
-           let cameraPicker = UIPickerView.showPickerView(title: "Camera")
-           return cameraPicker
-       }
-
-       func roverPickerTapped() -> UIPickerView {
-           let roverPicker = UIPickerView.showPickerView(title: "Rover")
-           return roverPicker
-       }
+    func acceptButtonTapped() {
+        print("accept")
+    }
 }
