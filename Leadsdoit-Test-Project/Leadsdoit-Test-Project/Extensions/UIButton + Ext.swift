@@ -10,6 +10,8 @@ import UIKit
 enum ActionType {
     case exit
     case accept
+    case whiteExit
+    case history
 }
 
 extension UIButton {
@@ -20,6 +22,10 @@ extension UIButton {
             button.setImage(UIImage(named: "closeBlack"), for: .normal)
         case .accept:
             button.setImage(UIImage(named: "tick"), for: .normal)
+        case .whiteExit:
+            button.setImage(UIImage(named: "closeWhite"), for: .normal)
+        case .history:
+            button.setImage(UIImage(named: "history1"), for: .normal)
         }
         return button
     }

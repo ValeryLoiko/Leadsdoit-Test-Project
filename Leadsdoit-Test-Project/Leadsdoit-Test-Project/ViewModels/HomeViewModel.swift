@@ -16,10 +16,16 @@ class HomeViewModel {
         
     func closeButtonTapped(pickerView: UIPickerView) {
         print("close")
-        pickerView.resignFirstResponder()
     }
     
     func acceptButtonTapped() {
         print("accept")
     }
+    
+    func fullScreenImageViewModel(for indexPath: IndexPath, marsData: [MarsPhotoCellModel]) -> FullScreenImageViewModel {
+           let photoModel = marsData[indexPath.row]
+           let viewModel = FullScreenImageViewModel()
+           viewModel.imageURL = photoModel.imageUrl
+           return viewModel
+       }
 }

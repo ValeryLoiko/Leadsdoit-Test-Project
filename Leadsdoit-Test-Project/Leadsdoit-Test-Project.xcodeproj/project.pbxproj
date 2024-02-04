@@ -17,6 +17,11 @@
 		846348CE2B68566900B8CCD9 /* UIPickerView + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846348CD2B68566900B8CCD9 /* UIPickerView + Ext.swift */; };
 		8478C8812B5EB3B8009E71ED /* MarsPhotoCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8478C8802B5EB3B8009E71ED /* MarsPhotoCellModel.swift */; };
 		847A47442B6907DC00743681 /* UIButton + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A47432B6907DC00743681 /* UIButton + Ext.swift */; };
+		847A9D4B2B6EC428002A1487 /* FullScreenImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A9D4A2B6EC428002A1487 /* FullScreenImageViewModel.swift */; };
+		847A9D4E2B6EC47C002A1487 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 847A9D4D2B6EC47C002A1487 /* SDWebImage */; };
+		847A9D502B6EC49B002A1487 /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A9D4F2B6EC49B002A1487 /* FullScreenImageViewController.swift */; };
+		847A9D522B6F9B70002A1487 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A9D512B6F9B70002A1487 /* HistoryViewController.swift */; };
+		847A9D542B6F9B7F002A1487 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A9D532B6F9B7F002A1487 /* HistoryViewModel.swift */; };
 		84B003A72B56D20000F07C9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B003A62B56D20000F07C9B /* AppDelegate.swift */; };
 		84B003A92B56D20000F07C9B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B003A82B56D20000F07C9B /* SceneDelegate.swift */; };
 		84B003AB2B56D20000F07C9B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B003AA2B56D20000F07C9B /* HomeViewController.swift */; };
@@ -35,6 +40,10 @@
 		846348CD2B68566900B8CCD9 /* UIPickerView + Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPickerView + Ext.swift"; sourceTree = "<group>"; };
 		8478C8802B5EB3B8009E71ED /* MarsPhotoCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarsPhotoCellModel.swift; sourceTree = "<group>"; };
 		847A47432B6907DC00743681 /* UIButton + Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + Ext.swift"; sourceTree = "<group>"; };
+		847A9D4A2B6EC428002A1487 /* FullScreenImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewModel.swift; sourceTree = "<group>"; };
+		847A9D4F2B6EC49B002A1487 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
+		847A9D512B6F9B70002A1487 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		847A9D532B6F9B7F002A1487 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		84B003A32B56D20000F07C9B /* Leadsdoit-Test-Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Leadsdoit-Test-Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B003A62B56D20000F07C9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84B003A82B56D20000F07C9B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				847A9D4E2B6EC47C002A1487 /* SDWebImage in Frameworks */,
 				84490C382B572F3A00E64212 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,6 +114,8 @@
 			isa = PBXGroup;
 			children = (
 				846348CB2B64607A00B8CCD9 /* HomeViewModel.swift */,
+				847A9D4A2B6EC428002A1487 /* FullScreenImageViewModel.swift */,
+				847A9D532B6F9B7F002A1487 /* HistoryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -113,6 +125,8 @@
 			children = (
 				8453BD5E2B5A88AE002D5986 /* Cells */,
 				84B003AA2B56D20000F07C9B /* HomeViewController.swift */,
+				847A9D4F2B6EC49B002A1487 /* FullScreenImageViewController.swift */,
+				847A9D512B6F9B70002A1487 /* HistoryViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -186,6 +200,7 @@
 			name = "Leadsdoit-Test-Project";
 			packageProductDependencies = (
 				84490C372B572F3A00E64212 /* SnapKit */,
+				847A9D4D2B6EC47C002A1487 /* SDWebImage */,
 			);
 			productName = "Leadsdoit-Test-Project";
 			productReference = 84B003A32B56D20000F07C9B /* Leadsdoit-Test-Project.app */;
@@ -217,6 +232,7 @@
 			mainGroup = 84B0039A2B56D20000F07C9B;
 			packageReferences = (
 				84490C362B572F3A00E64212 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				847A9D4C2B6EC47C002A1487 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 84B003A42B56D20000F07C9B /* Products */;
 			projectDirPath = "";
@@ -247,12 +263,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				84490C402B5736B200E64212 /* UIFont+Ext.swift in Sources */,
+				847A9D502B6EC49B002A1487 /* FullScreenImageViewController.swift in Sources */,
 				847A47442B6907DC00743681 /* UIButton + Ext.swift in Sources */,
 				846348CC2B64607A00B8CCD9 /* HomeViewModel.swift in Sources */,
+				847A9D4B2B6EC428002A1487 /* FullScreenImageViewModel.swift in Sources */,
+				847A9D522B6F9B70002A1487 /* HistoryViewController.swift in Sources */,
 				8478C8812B5EB3B8009E71ED /* MarsPhotoCellModel.swift in Sources */,
 				8453BD602B5A88CA002D5986 /* HomeTableViewCell.swift in Sources */,
 				84B003AB2B56D20000F07C9B /* HomeViewController.swift in Sources */,
 				8453BD642B5D49F2002D5986 /* ApiManager.swift in Sources */,
+				847A9D542B6F9B7F002A1487 /* HistoryViewModel.swift in Sources */,
 				846348CE2B68566900B8CCD9 /* UIPickerView + Ext.swift in Sources */,
 				8453BD622B5D4801002D5986 /* MarsCameraModel.swift in Sources */,
 				84B003A72B56D20000F07C9B /* AppDelegate.swift in Sources */,
@@ -484,6 +504,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		847A9D4C2B6EC47C002A1487 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -491,6 +519,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 84490C362B572F3A00E64212 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		847A9D4D2B6EC47C002A1487 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 847A9D4C2B6EC47C002A1487 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

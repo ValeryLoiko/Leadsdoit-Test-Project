@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 extension HomeViewController {
-    func setupPickerContainer(for picker: UIPickerView, title: String, closeButtonAction: Selector, acceptButtonAction: Selector) {
+    func setupPickerContainer(for picker: UIPickerView, title: String, closeButtonAction: Selector, acceptButtonAction: Selector) -> UIView{
         let containerView = UIView()
         
         containerView.layer.cornerRadius = 50
@@ -31,7 +31,7 @@ extension HomeViewController {
         view.addSubview(containerView)
         containerView.addSubview(closeButton)
         containerView.addSubview(acceptButton)
-        view.addSubview(titleLabel)
+        containerView.addSubview(titleLabel)
         containerView.addSubview(picker)
         
         containerView.snp.makeConstraints {
@@ -66,6 +66,8 @@ extension HomeViewController {
             $0.height.equalTo(242)
             $0.bottom.equalTo(containerView)
         }
+      //  view.addSubview(containerView)
+        return containerView
     }
 }
 

@@ -27,7 +27,12 @@ class HomeViewController: UIViewController {
     
     private lazy var cameraPicker = UIPickerView()
     private lazy var roverPicker = UIPickerView()
+    private lazy var containerView = UIView()
     
+    private var historyButtom: UIButton = {
+        let buttom = UIButton.setupAction(type: .history)
+        return buttom
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +77,18 @@ class HomeViewController: UIViewController {
     
     private func updateDate() {
         dateLabel.text = viewModel.currentDate
+        view.addSubview(historyButtom)
+        
+        historyButtom.snp.makeConstraints {
+            $0.height.width.equalTo(70)
+            $0.top.equalToSuperview().offset(761)
+            $0.leading.equalToSuperview().offset(303)
+        }
+        historyButtom.addTarget(self, action: #selector(historyButtomTapped), for: .touchUpInside)
+    }
+    
+    @objc private func historyButtomTapped() {
+        print("history")
     }
     
     func updatePickerRows() {
@@ -86,28 +103,31 @@ class HomeViewController: UIViewController {
         cameraPicker.dataSource = self
         cameraPicker.delegate = self
         
-        setupPickerContainer(for: cameraPicker, title: "Camera", closeButtonAction: #selector(closeCameraTapped), acceptButtonAction: #selector(acceptCameraTapped))
+        guard containerView.superview != nil else {
+            containerView = setupPickerContainer(for: roverPicker, title: "Rover", closeButtonAction: #selector(closeButtonTapped), acceptButtonAction: #selector(acceptRoverTapped))
+            return
+        }
     }
     
     @objc func filterRoverTapped() {
         roverPicker.dataSource = self
         roverPicker.delegate = self
         
-        setupPickerContainer(for: roverPicker, title: "Rover", closeButtonAction: #selector(closeRoverTapped), acceptButtonAction: #selector(acceptRoverTapped))
+        guard containerView.superview != nil else {
+            containerView = setupPickerContainer(for: roverPicker, title: "Rover", closeButtonAction: #selector(closeButtonTapped), acceptButtonAction: #selector(acceptRoverTapped))
+            return
+        }
+        
     }
     
-    @objc func closeRoverTapped() {
-        viewModel.closeButtonTapped(pickerView: roverPicker)
-        roverPicker.isHidden = true
+    @objc func closeButtonTapped() {
+        containerView.removeFromSuperview()
+        
     }
     @objc func acceptRoverTapped() {
         viewModel.acceptButtonTapped()
     }
     
-    @objc func closeCameraTapped() {
-        viewModel.closeButtonTapped(pickerView: cameraPicker)
-        cameraPicker.isHidden = true
-    }
     @objc func acceptCameraTapped() {
         viewModel.acceptButtonTapped()
     }
@@ -165,5 +185,15 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let fullScreenImageViewModel = viewModel.fullScreenImageViewModel(for: indexPath, marsData: marsData)
+        
+        let fullScreenImageVC = FullScreenImageViewController()
+        fullScreenImageVC.viewModel = fullScreenImageViewModel
+        fullScreenImageVC.modalPresentationStyle = .fullScreen
+        
+        present(fullScreenImageVC, animated: true, completion: nil)
     }
 }
