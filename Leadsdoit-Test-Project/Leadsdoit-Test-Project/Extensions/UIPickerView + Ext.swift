@@ -10,7 +10,7 @@ import SnapKit
 
 extension HomeViewController {
     func setupPickerContainer(for picker: UIPickerView, title: String, closeButtonAction: Selector, acceptButtonAction: Selector) -> UIView{
-        let containerView = UIView()
+        lazy var containerView = UIView()
         
         containerView.layer.cornerRadius = 50
         containerView.layer.borderColor = UIColor.black.cgColor

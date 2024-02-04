@@ -12,6 +12,7 @@ enum ActionType {
     case accept
     case whiteExit
     case history
+    case left
 }
 
 extension UIButton {
@@ -26,6 +27,8 @@ extension UIButton {
             button.setImage(UIImage(named: "closeWhite"), for: .normal)
         case .history:
             button.setImage(UIImage(named: "history1"), for: .normal)
+        case .left:
+            button.setImage(UIImage(named: "left"), for: .normal)
         }
         return button
     }

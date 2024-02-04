@@ -18,6 +18,11 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var add: UIView!
     @IBOutlet weak var tableView: UITableView!
     
+    private var historyButtom: UIButton = {
+        let buttom = UIButton.setupAction(type: .history)
+        return buttom
+    }()
+    
     //MARK: - Private properties
     var marsData: [MarsPhotoCellModel] = []
     var roverPickerRowsName: [String] = []
@@ -28,11 +33,6 @@ class HomeViewController: UIViewController {
     private lazy var cameraPicker = UIPickerView()
     private lazy var roverPicker = UIPickerView()
     private lazy var containerView = UIView()
-    
-    private var historyButtom: UIButton = {
-        let buttom = UIButton.setupAction(type: .history)
-        return buttom
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,6 +89,12 @@ class HomeViewController: UIViewController {
     
     @objc private func historyButtomTapped() {
         print("history")
+        
+        let historyVC = HistoryViewController()
+//        historyVC.modalPresentationStyle = .overFullScreen
+//        present(historyVC, animated: true)
+        historyVC.navigationItem.leftBarButtonItem = nil
+        navigationController?.pushViewController(historyVC, animated: true)
     }
     
     func updatePickerRows() {
