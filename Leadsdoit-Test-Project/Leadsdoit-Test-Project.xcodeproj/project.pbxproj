@@ -28,6 +28,8 @@
 		84B003AE2B56D20000F07C9B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B003AC2B56D20000F07C9B /* Main.storyboard */; };
 		84B003B02B56D20400F07C9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84B003AF2B56D20400F07C9B /* Assets.xcassets */; };
 		84B003B32B56D20400F07C9B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B003B12B56D20400F07C9B /* LaunchScreen.storyboard */; };
+		84BCC3422B710D27007BBA05 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BCC3412B710D27007BBA05 /* HistoryTableViewCell.swift */; };
+		84BCC3452B710F61007BBA05 /* UIColorHexSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 84BCC3442B710F61007BBA05 /* UIColorHexSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +54,7 @@
 		84B003AF2B56D20400F07C9B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84B003B22B56D20400F07C9B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84B003B42B56D20400F07C9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84BCC3412B710D27007BBA05 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84BCC3452B710F61007BBA05 /* UIColorHexSwift in Frameworks */,
 				847A9D4E2B6EC47C002A1487 /* SDWebImage in Frameworks */,
 				84490C382B572F3A00E64212 /* SnapKit in Frameworks */,
 			);
@@ -97,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				8453BD5F2B5A88CA002D5986 /* HomeTableViewCell.swift */,
+				84BCC3412B710D27007BBA05 /* HistoryTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -201,6 +206,7 @@
 			packageProductDependencies = (
 				84490C372B572F3A00E64212 /* SnapKit */,
 				847A9D4D2B6EC47C002A1487 /* SDWebImage */,
+				84BCC3442B710F61007BBA05 /* UIColorHexSwift */,
 			);
 			productName = "Leadsdoit-Test-Project";
 			productReference = 84B003A32B56D20000F07C9B /* Leadsdoit-Test-Project.app */;
@@ -233,6 +239,7 @@
 			packageReferences = (
 				84490C362B572F3A00E64212 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				847A9D4C2B6EC47C002A1487 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				84BCC3432B710F61007BBA05 /* XCRemoteSwiftPackageReference "UIColor-Hex-Swift" */,
 			);
 			productRefGroup = 84B003A42B56D20000F07C9B /* Products */;
 			projectDirPath = "";
@@ -272,6 +279,7 @@
 				8453BD602B5A88CA002D5986 /* HomeTableViewCell.swift in Sources */,
 				84B003AB2B56D20000F07C9B /* HomeViewController.swift in Sources */,
 				8453BD642B5D49F2002D5986 /* ApiManager.swift in Sources */,
+				84BCC3422B710D27007BBA05 /* HistoryTableViewCell.swift in Sources */,
 				847A9D542B6F9B7F002A1487 /* HistoryViewModel.swift in Sources */,
 				846348CE2B68566900B8CCD9 /* UIPickerView + Ext.swift in Sources */,
 				8453BD622B5D4801002D5986 /* MarsCameraModel.swift in Sources */,
@@ -512,6 +520,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		84BCC3432B710F61007BBA05 /* XCRemoteSwiftPackageReference "UIColor-Hex-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yeahdongcn/UIColor-Hex-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -524,6 +540,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 847A9D4C2B6EC47C002A1487 /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImage;
+		};
+		84BCC3442B710F61007BBA05 /* UIColorHexSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84BCC3432B710F61007BBA05 /* XCRemoteSwiftPackageReference "UIColor-Hex-Swift" */;
+			productName = UIColorHexSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
