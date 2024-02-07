@@ -14,25 +14,29 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var roverView: UIView!
     @IBOutlet weak var cameraView: UIView!
-    @IBOutlet weak var calendar: UIImageView!
-    @IBOutlet weak var add: UIView!
+    @IBOutlet weak var calendarView: UIImageView!
+    @IBOutlet weak var addView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
     private var historyButtom: UIButton = {
         let buttom = UIButton.setupAction(type: .history)
         return buttom
     }()
+    var viewModel = HomeViewModel()
     
     //MARK: - Private properties
     var marsData: [MarsPhotoCellModel] = []
     var roverPickerRowsName: [String] = []
     var cameraPickerRowsName: [String] = []
     
-    var viewModel = HomeViewModel()
-    
     private lazy var cameraPicker = UIPickerView()
     private lazy var roverPicker = UIPickerView()
+    private lazy var datePiker = UIDatePicker()
     private lazy var containerView = UIView()
+    
+    var selectedRover: String?
+    var selectedCamera: String?
+    var selectedDate: Date?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +77,13 @@ class HomeViewController: UIViewController {
         let roverTapGesture = UITapGestureRecognizer(target: self, action: #selector(filterRoverTapped))
         roverView.addGestureRecognizer(roverTapGesture)
         
+        let dateTapGesture = UITapGestureRecognizer(target: self, action: #selector(calendarTapped))
+        calendarView.isUserInteractionEnabled = true
+        calendarView.addGestureRecognizer(dateTapGesture)
+        
+        let addTapGesture = UITapGestureRecognizer(target: self, action: #selector(addTapped))
+        addTapGesture.view?.isUserInteractionEnabled = true
+        addView.addGestureRecognizer(addTapGesture)
     }
     
     private func updateDate() {
@@ -88,11 +99,7 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func historyButtomTapped() {
-        print("history")
-        
-        let historyVC = HistoryViewController()
-//        historyVC.modalPresentationStyle = .overFullScreen
-//        present(historyVC, animated: true)
+        let historyVC = HistoryViewController(viewModel: HistoryViewModel(filteredData: self.viewModel.filteredData))
         historyVC.navigationItem.leftBarButtonItem = nil
         navigationController?.pushViewController(historyVC, animated: true)
     }
@@ -109,21 +116,42 @@ class HomeViewController: UIViewController {
         cameraPicker.dataSource = self
         cameraPicker.delegate = self
         
-        guard containerView.superview != nil else {
-            containerView = setupPickerContainer(for: roverPicker, title: "Rover", closeButtonAction: #selector(closeButtonTapped), acceptButtonAction: #selector(acceptRoverTapped))
-            return
-        }
+        cameraPicker.reloadAllComponents()
+        
+        guard containerView.superview == nil else { return }
+        containerView = setupPickerContainer(for: cameraPicker, title: "Camera", closeButtonAction: #selector(closeButtonTapped), acceptButtonAction: #selector(acceptCameraTapped))
     }
     
     @objc func filterRoverTapped() {
         roverPicker.dataSource = self
         roverPicker.delegate = self
         
+        roverPicker.reloadAllComponents()
+        
+        guard containerView.superview == nil else { return }
+        containerView = setupPickerContainer(for: roverPicker, title: "Rover", closeButtonAction: #selector(closeButtonTapped), acceptButtonAction: #selector(acceptRoverTapped))
+    }
+    
+    @objc func calendarTapped() {
+        datePiker.datePickerMode = .date
+        
         guard containerView.superview != nil else {
-            containerView = setupPickerContainer(for: roverPicker, title: "Rover", closeButtonAction: #selector(closeButtonTapped), acceptButtonAction: #selector(acceptRoverTapped))
+            
+            
+            containerView = setupDatePickerContainer(for: datePiker, title: "Date", closeButtonAction: #selector(closeButtonTapped), acceptButtonAction: #selector(acceptDateTapped))
             return
         }
-        
+    }
+    
+    @objc func addTapped() {
+        let alert = UIAlertController(title: "Save Filters", message: "The current filters and the date you have chosen can be saved to the filter history.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: {_ in
+            print("Alert Action")
+            self.viewModel.filteredData = self.viewModel.prepareFilteredData(self.marsData)
+            print(self.viewModel.filteredData)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
     }
     
     @objc func closeButtonTapped() {
@@ -131,11 +159,38 @@ class HomeViewController: UIViewController {
         
     }
     @objc func acceptRoverTapped() {
-        viewModel.acceptButtonTapped()
+        let selectedRoverIndex = roverPicker.selectedRow(inComponent: 0)
+        if selectedRoverIndex == 0 {
+            // Выбрано значение "All", сбросить фильтр и отобразить все данные
+            selectedRover = nil
+        } else {
+            selectedRover = roverPickerRowsName[selectedRoverIndex]
+        }
+        print("Selected Rover: \(selectedRover ?? "All")")
+        containerView.removeFromSuperview()
     }
     
     @objc func acceptCameraTapped() {
-        viewModel.acceptButtonTapped()
+        let selectedCameraIndex = cameraPicker.selectedRow(inComponent: 0)
+        if selectedCameraIndex == 0 {
+            // Выбрано значение "All", сбросить фильтр и отобразить все данные
+            selectedCamera = nil
+        } else {
+            selectedCamera = cameraPickerRowsName[selectedCameraIndex]
+        }
+        print("Selected Camera: \(selectedCamera ?? "All")")
+        containerView.removeFromSuperview()
+        
+    }
+    
+    @objc func acceptDateTapped() {
+        // Получение выбранной даты из datePicker
+        selectedDate = datePiker.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM d, yyyy"
+        let formattedDate = dateFormatter.string(from: selectedDate!)
+        print("Selected Date: \(formattedDate)")
+        containerView.removeFromSuperview()
     }
 }
 
@@ -145,11 +200,13 @@ extension HomeViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        var countOfRows = 0
         if pickerView.isEqual(roverPicker) {
-            return roverPickerRowsName.count
-        } else {
-            return cameraPickerRowsName.count
+            countOfRows = roverPickerRowsName.count
+        } else if pickerView.isEqual(cameraPicker){
+            countOfRows = cameraPickerRowsName.count
         }
+        return countOfRows
     }
 }
 
@@ -163,7 +220,7 @@ extension HomeViewController: UIPickerViewDelegate {
         let label = UILabel()
         if pickerView.isEqual(roverPicker) {
             label.text = roverPickerRowsName[row]
-        } else {
+        } else if pickerView.isEqual(cameraPicker){
             label.text = cameraPickerRowsName[row]
         }
         
@@ -185,6 +242,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         let photoModel = marsData[indexPath.row]
+    
         cell.configure(imageURLLL: photoModel.imageUrl, roverText: photoModel.roverName, cameraText: photoModel.cameraName, dateText: photoModel.earthDate)
         return cell
     }

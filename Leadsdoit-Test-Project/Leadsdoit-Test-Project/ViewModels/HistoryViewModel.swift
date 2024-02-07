@@ -8,5 +8,9 @@
 import Foundation
 
 class HistoryViewModel {
-    
+    var filteredData: [MarsPhotoCellModel]
+     
+     init(filteredData: [MarsPhotoCellModel]) {
+         self.filteredData = filteredData
+     }
 }

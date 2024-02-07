@@ -1,15 +1,15 @@
 //
-//  UIPickerView + Ext.swift
+//  UIDatePicker + Ext.swift
 //  Leadsdoit-Test-Project
 //
-//  Created by Diana on 29/01/2024.
+//  Created by Diana on 07/02/2024.
 //
 
 import UIKit
 import SnapKit
 
 extension HomeViewController {
-    func setupPickerContainer(for picker: UIPickerView, title: String, closeButtonAction: Selector, acceptButtonAction: Selector) -> UIView{
+    func setupDatePickerContainer(for picker: UIDatePicker, title: String, closeButtonAction: Selector, acceptButtonAction: Selector) -> UIView{
         lazy var containerView = UIView()
         
         containerView.layer.cornerRadius = 50
@@ -35,7 +35,7 @@ extension HomeViewController {
         containerView.addSubview(picker)
         
         containerView.snp.makeConstraints {
-            $0.bottom.equalToSuperview()
+            $0.center.equalToSuperview()
             $0.width.equalToSuperview()
             $0.height.equalTo(306)
         }

@@ -11,7 +11,8 @@ import UIColorHexSwift
 
 class HistoryViewController: UIViewController {
     
-    var historyData: [MarsPhotoCellModel] = [MarsPhotoCellModel(roverName: "asdads", cameraName: "asdads", earthDate: "asdad", imageUrl: "asdada"), MarsPhotoCellModel(roverName: "1111111", cameraName: "22222222", earthDate: "12.12.2312", imageUrl: "a")]
+    var viewModel: HistoryViewModel
+    var historyData: [MarsPhotoCellModel] = []
     
     private lazy var containerView = UIView()
     private lazy var backButton: UIButton = {
@@ -36,11 +37,25 @@ class HistoryViewController: UIViewController {
     
     private lazy var tableView = UITableView()
     
+    init(viewModel: HistoryViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("Filtered Data: \(viewModel.filteredData)")
+        historyData = viewModel.filteredData
+        tableView.reloadData()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         configureView()
-        
     }
     
     private func configureView() {
@@ -52,25 +67,25 @@ class HistoryViewController: UIViewController {
         containerView.addSubview(backButton)
         containerView.addSubview(titleLabel)
         
-//        if historyData.isEmpty {
-//            view.addSubview(emptyImage)
-//
-//            emptyImage.snp.makeConstraints {
-//                $0.width.equalTo(193)
-//                $0.height.equalTo(186)
-//                $0.center.equalToSuperview()
-//            }
-//        } else {
+        if !historyData.isEmpty {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.identifier)
-
+            
             view.addSubview(tableView)
             tableView.snp.makeConstraints {
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.top.equalTo(containerView.snp.bottom)
             }
-//        }
+        } else {
+            view.addSubview(emptyImage)
+
+            emptyImage.snp.makeConstraints {
+                $0.width.equalTo(193)
+                $0.height.equalTo(186)
+                $0.center.equalToSuperview()
+            }
+        }
         
         containerView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
@@ -98,7 +113,7 @@ class HistoryViewController: UIViewController {
 
 extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        return historyData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -108,7 +123,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
         
         let historyModel = historyData[indexPath.row]
         cell.configure(roverText: historyModel.roverName, cameraText: historyModel.cameraName, dateText: historyModel.earthDate)
-    return cell
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
