@@ -10,6 +10,7 @@ import SnapKit
 
 class HomeViewController: UIViewController {
     
+    let historyViewController = HistoryViewController()
     //MARK: - Outlets
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var roverView: UIView!
@@ -26,6 +27,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Private properties
     var marsData: [MarsPhotoCellModel] = []
+    var filteredData: [MarsPhotoCellModel] = []
     var roverPickerRowsName: [String] = []
     var cameraPickerRowsName: [String] = []
     
@@ -48,6 +50,8 @@ class HomeViewController: UIViewController {
         cameraView.isUserInteractionEnabled = true
         roverView.isUserInteractionEnabled = true
         
+        
+        
         ApiManager.fetchMarsPhotos { [weak self] marsCamera in
             
             DispatchQueue.main.async {
@@ -61,7 +65,6 @@ class HomeViewController: UIViewController {
                     }
                     print("Right")
                     self?.updatePickerRows()
-                    
                     DispatchQueue.main.async {
                         self?.tableView.reloadData()
                     }
@@ -99,9 +102,9 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func historyButtomTapped() {
-        let historyVC = HistoryViewController(viewModel: HistoryViewModel(filteredData: self.viewModel.filteredData))
-        historyVC.navigationItem.leftBarButtonItem = nil
-        navigationController?.pushViewController(historyVC, animated: true)
+     //   let historyVC = HistoryViewController()
+   //     historyVC.navigationItem.leftBarButtonItem = nil
+        navigationController?.pushViewController(historyViewController, animated: true)
     }
     
     func updatePickerRows() {
@@ -147,8 +150,12 @@ class HomeViewController: UIViewController {
         let alert = UIAlertController(title: "Save Filters", message: "The current filters and the date you have chosen can be saved to the filter history.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Save", style: .default, handler: {_ in
             print("Alert Action")
-            self.viewModel.filteredData = self.viewModel.prepareFilteredData(self.marsData)
-            print(self.viewModel.filteredData)
+          
+            self.filteredData = self.filterMarsData(self.marsData)
+            print(self.filteredData)
+            self.historyViewController.historyData += self.filteredData
+            
+
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(alert, animated: true)
@@ -188,6 +195,7 @@ class HomeViewController: UIViewController {
         selectedDate = datePiker.date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM d, yyyy"
+        
         let formattedDate = dateFormatter.string(from: selectedDate!)
         print("Selected Date: \(formattedDate)")
         containerView.removeFromSuperview()
@@ -207,6 +215,26 @@ extension HomeViewController: UIPickerViewDataSource {
             countOfRows = cameraPickerRowsName.count
         }
         return countOfRows
+    }
+    
+    private func filterMarsData(_ marsData: [MarsPhotoCellModel]) -> [MarsPhotoCellModel] {
+        var filteredData = marsData
+        
+        if let rover = selectedRover, rover != "All" {
+            filteredData = filteredData.filter { $0.roverName == rover }
+        }
+        
+        if let camera = selectedCamera, camera != "All" {
+            filteredData = filteredData.filter { $0.cameraName == camera }
+        }
+        
+        if let date = selectedDate {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let selectedDateString = dateFormatter.string(from: date)
+            filteredData = filteredData.filter { $0.earthDate == selectedDateString }
+        }
+        return filteredData
     }
 }
 
@@ -242,7 +270,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         let photoModel = marsData[indexPath.row]
-    
         cell.configure(imageURLLL: photoModel.imageUrl, roverText: photoModel.roverName, cameraText: photoModel.cameraName, dateText: photoModel.earthDate)
         return cell
     }

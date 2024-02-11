@@ -8,7 +8,8 @@
 import UIKit
 
 class HomeViewModel {
-    
+   // var historyViewModel: HistoryViewModel
+      
     var selectedRover: String?
     var selectedCamera: String?
     var selectedDate: Date?
@@ -36,50 +37,27 @@ class HomeViewModel {
         return viewModel
     }
     
-    func filterMarsData(_ marsData: [MarsPhotoCellModel]) -> [MarsPhotoCellModel] {
-        var filteredData = marsData
-        
-        if let rover = selectedRover, rover != "All" {
-            filteredData = filteredData.filter { $0.roverName == rover }
-        }
-        
-        if let camera = selectedCamera, camera != "All" {
-            filteredData = filteredData.filter { $0.cameraName == camera }
-        }
-        
-        if let date = selectedDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMMM d, yyyy"
-            let selectedDateString = dateFormatter.string(from: date)
-            filteredData = filteredData.filter { $0.earthDate == selectedDateString }
-        }
-        return filteredData
-    }
-    
-//    func prepareFilteredData(_ marsData: [MarsPhotoCellModel]) -> [MarsPhotoCellModel] {
-//        return filterMarsData(marsData)
-//    }
-    func prepareFilteredData(_ marsData: [MarsPhotoCellModel]) -> [MarsPhotoCellModel] {
-        print(selectedRover)
-        print(selectedCamera)
-        print(selectedDate)
-        var filteredData = marsData
-        
-        if let rover = selectedRover, rover != "All" {
-            filteredData = filteredData.filter { $0.roverName == rover }
-        }
-        
-        if let camera = selectedCamera, camera != "All" {
-            filteredData = filteredData.filter { $0.cameraName == camera }
-        }
-        
-        if let date = selectedDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let selectedDateString = dateFormatter.string(from: date)
-            filteredData = filteredData.filter { $0.earthDate == selectedDateString }
-        }
-        print(filteredData)
-        return filteredData
-    }
+    func saveFilteredData(_ data: [MarsPhotoCellModel]) {
+           filteredData = data
+       }
+      
+      private func filterMarsData(_ marsData: [MarsPhotoCellModel]) -> [MarsPhotoCellModel] {
+          var filteredData = marsData
+          
+          if let rover = selectedRover, rover != "All" {
+              filteredData = filteredData.filter { $0.roverName == rover }
+          }
+          
+          if let camera = selectedCamera, camera != "All" {
+              filteredData = filteredData.filter { $0.cameraName == camera }
+          }
+          
+          if let date = selectedDate {
+              let dateFormatter = DateFormatter()
+              dateFormatter.dateFormat = "MMMM d, yyyy"
+              let selectedDateString = dateFormatter.string(from: date)
+              filteredData = filteredData.filter { $0.earthDate == selectedDateString }
+          }
+          return filteredData
+      }
 }

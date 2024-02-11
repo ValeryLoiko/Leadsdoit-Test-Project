@@ -10,8 +10,6 @@ import SnapKit
 import UIColorHexSwift
 
 class HistoryViewController: UIViewController {
-    
-    var viewModel: HistoryViewModel
     var historyData: [MarsPhotoCellModel] = []
     
     private lazy var containerView = UIView()
@@ -36,27 +34,21 @@ class HistoryViewController: UIViewController {
     }()
     
     private lazy var tableView = UITableView()
-    
-    init(viewModel: HistoryViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Filtered Data: \(viewModel.filteredData)")
-        historyData = viewModel.filteredData
-        tableView.reloadData()
+ //       configureView()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureView()
+        print(historyData)
+        tableView.reloadData()
+  
+        
     }
+    
     
     private func configureView() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
@@ -130,7 +122,16 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
         return 136
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Menu Filter", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Use", style: .default, handler: { _ in
+                print("Use")
+        }))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+            print("Delete")
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
 }
-
 
