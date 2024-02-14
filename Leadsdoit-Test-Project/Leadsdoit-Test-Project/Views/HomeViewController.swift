@@ -10,7 +10,9 @@ import SnapKit
 
 class HomeViewController: UIViewController {
     
-    let historyViewController = HistoryViewController()
+    let viewModel = HomeViewModel()
+    var historyViewModel = HistoryViewModel()
+    
     //MARK: - Outlets
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var roverView: UIView!
@@ -23,11 +25,11 @@ class HomeViewController: UIViewController {
         let buttom = UIButton.setupAction(type: .history)
         return buttom
     }()
-    var viewModel = HomeViewModel()
     
     //MARK: - Private properties
     var marsData: [MarsPhotoCellModel] = []
     var filteredData: [MarsPhotoCellModel] = []
+    
     var roverPickerRowsName: [String] = []
     var cameraPickerRowsName: [String] = []
     
@@ -102,9 +104,7 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func historyButtomTapped() {
-     //   let historyVC = HistoryViewController()
-   //     historyVC.navigationItem.leftBarButtonItem = nil
-        navigationController?.pushViewController(historyViewController, animated: true)
+        viewModel.openHistoryViewController(from: self, historyViewModel: historyViewModel)
     }
     
     func updatePickerRows() {
@@ -139,8 +139,6 @@ class HomeViewController: UIViewController {
         datePiker.datePickerMode = .date
         
         guard containerView.superview != nil else {
-            
-            
             containerView = setupDatePickerContainer(for: datePiker, title: "Date", closeButtonAction: #selector(closeButtonTapped), acceptButtonAction: #selector(acceptDateTapped))
             return
         }
@@ -149,13 +147,8 @@ class HomeViewController: UIViewController {
     @objc func addTapped() {
         let alert = UIAlertController(title: "Save Filters", message: "The current filters and the date you have chosen can be saved to the filter history.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Save", style: .default, handler: {_ in
-            print("Alert Action")
-          
-            self.filteredData = self.filterMarsData(self.marsData)
-            print(self.filteredData)
-            self.historyViewController.historyData += self.filteredData
-            
-
+            let filteredData = self.viewModel.filterMarsData(self.marsData)
+            self.historyViewModel.filteredHistoryData += filteredData
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(alert, animated: true)
@@ -168,10 +161,9 @@ class HomeViewController: UIViewController {
     @objc func acceptRoverTapped() {
         let selectedRoverIndex = roverPicker.selectedRow(inComponent: 0)
         if selectedRoverIndex == 0 {
-            // Выбрано значение "All", сбросить фильтр и отобразить все данные
-            selectedRover = nil
+            self.viewModel.selectedRover = nil
         } else {
-            selectedRover = roverPickerRowsName[selectedRoverIndex]
+            self.viewModel.selectedRover = roverPickerRowsName[selectedRoverIndex]
         }
         print("Selected Rover: \(selectedRover ?? "All")")
         containerView.removeFromSuperview()
@@ -180,10 +172,9 @@ class HomeViewController: UIViewController {
     @objc func acceptCameraTapped() {
         let selectedCameraIndex = cameraPicker.selectedRow(inComponent: 0)
         if selectedCameraIndex == 0 {
-            // Выбрано значение "All", сбросить фильтр и отобразить все данные
-            selectedCamera = nil
+            self.viewModel.selectedCamera = nil
         } else {
-            selectedCamera = cameraPickerRowsName[selectedCameraIndex]
+            self.viewModel.selectedCamera = cameraPickerRowsName[selectedCameraIndex]
         }
         print("Selected Camera: \(selectedCamera ?? "All")")
         containerView.removeFromSuperview()
@@ -191,12 +182,11 @@ class HomeViewController: UIViewController {
     }
     
     @objc func acceptDateTapped() {
-        // Получение выбранной даты из datePicker
-        selectedDate = datePiker.date
+        self.viewModel.selectedDate = datePiker.date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM d, yyyy"
         
-        let formattedDate = dateFormatter.string(from: selectedDate!)
+        let formattedDate = dateFormatter.string(from:  self.viewModel.selectedDate!)
         print("Selected Date: \(formattedDate)")
         containerView.removeFromSuperview()
     }
@@ -217,25 +207,7 @@ extension HomeViewController: UIPickerViewDataSource {
         return countOfRows
     }
     
-    private func filterMarsData(_ marsData: [MarsPhotoCellModel]) -> [MarsPhotoCellModel] {
-        var filteredData = marsData
-        
-        if let rover = selectedRover, rover != "All" {
-            filteredData = filteredData.filter { $0.roverName == rover }
-        }
-        
-        if let camera = selectedCamera, camera != "All" {
-            filteredData = filteredData.filter { $0.cameraName == camera }
-        }
-        
-        if let date = selectedDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let selectedDateString = dateFormatter.string(from: date)
-            filteredData = filteredData.filter { $0.earthDate == selectedDateString }
-        }
-        return filteredData
-    }
+    
 }
 
 extension HomeViewController: UIPickerViewDelegate {

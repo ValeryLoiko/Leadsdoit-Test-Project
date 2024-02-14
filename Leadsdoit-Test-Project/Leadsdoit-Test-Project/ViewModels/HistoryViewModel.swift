@@ -8,6 +8,7 @@
 import Foundation
 
 class HistoryViewModel {
-
-
+    
+    var filteredHistoryData: [MarsPhotoCellModel] = []
+    
 }

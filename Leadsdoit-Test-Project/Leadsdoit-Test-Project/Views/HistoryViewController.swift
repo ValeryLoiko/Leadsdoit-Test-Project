@@ -10,7 +10,8 @@ import SnapKit
 import UIColorHexSwift
 
 class HistoryViewController: UIViewController {
-    var historyData: [MarsPhotoCellModel] = []
+    
+    var viewModel = HistoryViewModel()
     
     private lazy var containerView = UIView()
     private lazy var backButton: UIButton = {
@@ -34,18 +35,17 @@ class HistoryViewController: UIViewController {
     }()
     
     private lazy var tableView = UITableView()
- 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
- //       configureView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureView()
-        print(historyData)
+        print(viewModel.filteredHistoryData)
         tableView.reloadData()
-  
+        
         
     }
     
@@ -59,7 +59,7 @@ class HistoryViewController: UIViewController {
         containerView.addSubview(backButton)
         containerView.addSubview(titleLabel)
         
-        if !historyData.isEmpty {
+        if !viewModel.filteredHistoryData.isEmpty {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.identifier)
@@ -71,7 +71,7 @@ class HistoryViewController: UIViewController {
             }
         } else {
             view.addSubview(emptyImage)
-
+            
             emptyImage.snp.makeConstraints {
                 $0.width.equalTo(193)
                 $0.height.equalTo(186)
@@ -105,7 +105,7 @@ class HistoryViewController: UIViewController {
 
 extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return historyData.count
+        return viewModel.filteredHistoryData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -113,7 +113,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let historyModel = historyData[indexPath.row]
+        let historyModel = viewModel.filteredHistoryData[indexPath.row]
         cell.configure(roverText: historyModel.roverName, cameraText: historyModel.cameraName, dateText: historyModel.earthDate)
         return cell
     }
@@ -125,7 +125,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let alert = UIAlertController(title: "Menu Filter", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Use", style: .default, handler: { _ in
-                print("Use")
+            print("Use")
         }))
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
             print("Delete")

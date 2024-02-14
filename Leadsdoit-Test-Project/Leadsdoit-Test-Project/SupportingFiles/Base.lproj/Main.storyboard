@@ -189,7 +189,7 @@
         <!--History View Controller-->
         <scene sceneID="shU-2X-1ik">
             <objects>
-                <viewController id="JBo-8R-mVP" customClass="HistoryViewController" customModule="Leadsdoit_Test_Project" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HistoryViewController" id="JBo-8R-mVP" customClass="HistoryViewController" customModule="Leadsdoit_Test_Project" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Dmv-rA-IgU">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -8,13 +8,11 @@
 import UIKit
 
 class HomeViewModel {
-   // var historyViewModel: HistoryViewModel
-      
+    
     var selectedRover: String?
     var selectedCamera: String?
     var selectedDate: Date?
     var filteredData: [MarsPhotoCellModel] = []
-
     
     var currentDate: String {
         let dateFormatter = DateFormatter()
@@ -38,26 +36,33 @@ class HomeViewModel {
     }
     
     func saveFilteredData(_ data: [MarsPhotoCellModel]) {
-           filteredData = data
-       }
-      
-      private func filterMarsData(_ marsData: [MarsPhotoCellModel]) -> [MarsPhotoCellModel] {
-          var filteredData = marsData
-          
-          if let rover = selectedRover, rover != "All" {
-              filteredData = filteredData.filter { $0.roverName == rover }
-          }
-          
-          if let camera = selectedCamera, camera != "All" {
-              filteredData = filteredData.filter { $0.cameraName == camera }
-          }
-          
-          if let date = selectedDate {
-              let dateFormatter = DateFormatter()
-              dateFormatter.dateFormat = "MMMM d, yyyy"
-              let selectedDateString = dateFormatter.string(from: date)
-              filteredData = filteredData.filter { $0.earthDate == selectedDateString }
-          }
-          return filteredData
-      }
+    }
+    
+    func filterMarsData(_ marsData: [MarsPhotoCellModel]) -> [MarsPhotoCellModel] {
+        filteredData = marsData
+        
+        if let rover = selectedRover, rover != "All" {
+            filteredData = filteredData.filter { $0.roverName == rover }
+        }
+        
+        if let camera = selectedCamera, camera != "All" {
+            filteredData = filteredData.filter { $0.cameraName == camera }
+        }
+        
+        if let date = selectedDate {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let selectedDateString = dateFormatter.string(from: date)
+            filteredData = filteredData.filter { $0.earthDate == selectedDateString }
+        }
+        return filteredData
+    }
+    
+    func openHistoryViewController(from viewController: UIViewController, historyViewModel: HistoryViewModel) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let historyVC = storyboard.instantiateViewController(withIdentifier: "HistoryViewController") as? HistoryViewController {
+            historyVC.viewModel = historyViewModel
+            viewController.navigationController?.pushViewController(historyVC, animated: true)
+        }
+    }
 }
