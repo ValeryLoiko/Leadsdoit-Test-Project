@@ -128,7 +128,9 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
             print("Use")
         }))
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
-            print("Delete")
+            self.viewModel.deleteSelectedCells(at: indexPath.row)
+            tableView.reloadData()
+        
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(alert, animated: true)
