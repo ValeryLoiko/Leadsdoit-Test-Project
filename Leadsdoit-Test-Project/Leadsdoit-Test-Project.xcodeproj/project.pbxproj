@@ -143,13 +143,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		848206662B587D280014126C /* Services */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
 		848206672B587D420014126C /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,7 +173,6 @@
 			isa = PBXGroup;
 			children = (
 				848206672B587D420014126C /* SupportingFiles */,
-				848206662B587D280014126C /* Services */,
 				848206652B587D1D0014126C /* Views */,
 				848206642B587CF80014126C /* ViewModels */,
 				848206632B587CDC0014126C /* Models */,
