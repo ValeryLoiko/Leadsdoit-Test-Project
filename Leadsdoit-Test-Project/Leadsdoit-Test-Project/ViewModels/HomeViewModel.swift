@@ -13,6 +13,8 @@ class HomeViewModel {
     var selectedCamera: String?
     var selectedDate: Date?
     var filteredData: [MarsPhotoCellModel] = []
+    var choiceData: [MarsPhotoCellModel] = []
+    var useChoiceData = false
     
     var currentDate: String {
         let dateFormatter = DateFormatter()

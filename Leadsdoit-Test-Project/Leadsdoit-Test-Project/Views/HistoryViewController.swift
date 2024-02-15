@@ -9,9 +9,16 @@ import UIKit
 import SnapKit
 import UIColorHexSwift
 
+protocol HistoryViewControllerDelegate: AnyObject {
+    func didSelectFilterData(_ data: [MarsPhotoCellModel])
+}
+
 class HistoryViewController: UIViewController {
     
     var viewModel = HistoryViewModel()
+    let homeViewModel = HomeViewModel()
+    weak var delegate: HistoryViewControllerDelegate?
+
     
     private lazy var containerView = UIView()
     private lazy var backButton: UIButton = {
@@ -43,10 +50,7 @@ class HistoryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureView()
-        print(viewModel.filteredHistoryData)
         tableView.reloadData()
-        
-        
     }
     
     
@@ -101,6 +105,11 @@ class HistoryViewController: UIViewController {
     @objc private func backButtonTap() {
         navigationController?.popViewController(animated: true)
     }
+    
+    func didSelectData(_ data: [MarsPhotoCellModel]) {
+        delegate?.didSelectFilterData(data)
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
@@ -125,7 +134,8 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let alert = UIAlertController(title: "Menu Filter", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Use", style: .default, handler: { _ in
-            print("Use")
+            let selectedData = self.viewModel.sendChoiceData(at: indexPath.row)
+            self.didSelectData(selectedData)
         }))
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
             self.viewModel.deleteSelectedCells(at: indexPath.row)

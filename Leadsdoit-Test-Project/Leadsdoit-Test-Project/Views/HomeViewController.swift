@@ -1,5 +1,4 @@
-//
-//  ViewController.swift
+//sudo killall -STOP -c usbd//  ViewController.swift
 //  Leadsdoit-Test-Project
 //
 //  Created by Diana on 16/01/2024.
@@ -7,10 +6,11 @@
 
 import UIKit
 import SnapKit
+import Lottie
 
 class HomeViewController: UIViewController {
     
-    let viewModel = HomeViewModel()
+    var viewModel = HomeViewModel()
     var historyViewModel = HistoryViewModel()
     
     //MARK: - Outlets
@@ -37,6 +37,8 @@ class HomeViewController: UIViewController {
     private lazy var roverPicker = UIPickerView()
     private lazy var datePiker = UIDatePicker()
     private lazy var containerView = UIView()
+    private lazy var animationView = LottieAnimationView(name: "Animation")
+
     
     var selectedRover: String?
     var selectedCamera: String?
@@ -45,6 +47,18 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        animationView.loopMode = .loop
+        animationView.contentMode = .scaleAspectFit
+        animationView.animationSpeed = 1.0
+        view.addSubview(animationView)
+
+        animationView.snp.makeConstraints {
+            $0.width.height.equalTo(300)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(30)
+        }
+        animationView.play()
+        
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.identifier)
         tableView.dataSource = self
         tableView.delegate = self
@@ -52,29 +66,7 @@ class HomeViewController: UIViewController {
         cameraView.isUserInteractionEnabled = true
         roverView.isUserInteractionEnabled = true
         
-        
-        
-        ApiManager.fetchMarsPhotos { [weak self] marsCamera in
-            
-            DispatchQueue.main.async {
-                if let marsCamera = marsCamera {
-                    self?.marsData = marsCamera.photos.map { photo in
-                        return MarsPhotoCellModel(
-                            roverName: photo.rover.name.rawValue,
-                            cameraName: photo.camera.fullName.rawValue,
-                            earthDate: photo.earthDate,
-                            imageUrl: photo.imgSrc)
-                    }
-                    print("Right")
-                    self?.updatePickerRows()
-                    DispatchQueue.main.async {
-                        self?.tableView.reloadData()
-                    }
-                } else {
-                    print("Ошибка при получении данных о фотографиях на Марсе.")
-                }
-            }
-        }
+        loadDataFromAPI()
         
         let cameraTapGesture = UITapGestureRecognizer(target: self, action: #selector(filterCameraTapped))
         cameraView.addGestureRecognizer(cameraTapGesture)
@@ -91,6 +83,38 @@ class HomeViewController: UIViewController {
         addView.addGestureRecognizer(addTapGesture)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(viewModel.useChoiceData)
+        print(viewModel.choiceData)
+        if viewModel.useChoiceData == true {
+            print(viewModel.choiceData)
+            tableView.reloadData()
+        }
+    }
+    func loadDataFromAPI() {
+        ApiManager.fetchMarsPhotos { [weak self] marsCamera in
+            DispatchQueue.main.async {
+                self?.animationView.stop()
+                self?.animationView.removeFromSuperview()
+                
+                if let marsCamera = marsCamera {
+                    self?.marsData = marsCamera.photos.map { photo in
+                        return MarsPhotoCellModel(
+                            roverName: photo.rover.name.rawValue,
+                            cameraName: photo.camera.fullName.rawValue,
+                            earthDate: photo.earthDate,
+                            imageUrl: photo.imgSrc)
+                    }
+                    self?.updatePickerRows()
+                    self?.tableView.reloadData()
+                } else {
+                    print("Ошибка при получении данных о фотографиях на Марсе.")
+                }
+            }
+        }
+    }
+    
     private func updateDate() {
         dateLabel.text = viewModel.currentDate
         view.addSubview(historyButtom)
@@ -104,7 +128,11 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func historyButtomTapped() {
-        viewModel.openHistoryViewController(from: self, historyViewModel: historyViewModel)
+        //  viewModel.openHistoryViewController(from: self, historyViewModel: historyViewModel)
+        let historyVC = HistoryViewController()
+        historyVC.viewModel = historyViewModel
+        historyVC.delegate = self // Добавьте это, чтобы получить обратные данные
+        navigationController?.pushViewController(historyVC, animated: true)
     }
     
     func updatePickerRows() {
@@ -234,14 +262,24 @@ extension HomeViewController: UIPickerViewDelegate {
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return marsData.count
+        if viewModel.useChoiceData == true {
+            return viewModel.choiceData.count
+        } else {
+            return marsData.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier) as? HomeTableViewCell else {
             return UITableViewCell()
         }
-        let photoModel = marsData[indexPath.row]
+        var photoModel: MarsPhotoCellModel
+        
+        if viewModel.useChoiceData == true {
+            photoModel = viewModel.choiceData[indexPath.row]
+        } else {
+            photoModel = marsData[indexPath.row]
+        }
         cell.configure(imageURLLL: photoModel.imageUrl, roverText: photoModel.roverName, cameraText: photoModel.cameraName, dateText: photoModel.earthDate)
         return cell
     }
@@ -258,5 +296,13 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         fullScreenImageVC.modalPresentationStyle = .fullScreen
         
         present(fullScreenImageVC, animated: true, completion: nil)
+    }
+}
+
+extension HomeViewController: HistoryViewControllerDelegate {
+    func didSelectFilterData(_ data: [MarsPhotoCellModel]) {
+        viewModel.choiceData = data
+        viewModel.useChoiceData = true
+        tableView.reloadData()
     }
 }
