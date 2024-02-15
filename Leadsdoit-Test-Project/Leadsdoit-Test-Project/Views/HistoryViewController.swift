@@ -128,7 +128,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 136
+        return 148
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

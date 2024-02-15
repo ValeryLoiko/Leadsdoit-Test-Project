@@ -10,40 +10,28 @@ import UIColorHexSwift
 import SnapKit
 
 class HistoryTableViewCell: UITableViewCell {
-
+    
     static let identifier = "HistoryTableViewCell"
     
     private lazy var cornerView: UIView = {
-       let view = UIView()
-       view.layer.cornerRadius = 20
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.black.cgColor
-        
-        let borderShadowLayer = CALayer()
-          borderShadowLayer.frame = view.bounds
-          borderShadowLayer.cornerRadius = 20
-          borderShadowLayer.backgroundColor = UIColor.green.cgColor
-          borderShadowLayer.shadowColor = UIColor.black.cgColor
-          borderShadowLayer.shadowOffset = CGSize(width: 20, height: 20)
-          borderShadowLayer.shadowOpacity = 0.5
-          borderShadowLayer.shadowRadius = 20
-
-        // Устанавливаем shadowPath
-         borderShadowLayer.shadowPath = UIBezierPath(roundedRect: view.bounds, cornerRadius: 20).cgPath
-         
-         // Добавляем тень после установки границы
-         view.layer.addSublayer(borderShadowLayer)
-       return view
+        let view = UIView()
+        view.layer.cornerRadius = 20
+        view.backgroundColor = .white
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 0.4
+        view.layer.shadowOffset = CGSize(width: 0, height: 4)
+        view.layer.shadowRadius = 5
+        return view
     }()
     
     private lazy var orangeLine: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = UIColor("#FF692C")
         return view
     }()
     
     private lazy var filterLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "Filters"
         label.font = UIFont.title2
         label.textColor = UIColor("#FF692C")
@@ -80,27 +68,27 @@ class HistoryTableViewCell: UITableViewCell {
     
     func configure(roverText: String, cameraText: String, dateText: String) {
         
-         let grayAttributes: [NSAttributedString.Key: Any] = [
-             .foregroundColor: UIColor.gray,
-             .font: UIFont.systemFont(ofSize: 15, weight: .regular)
-         ]
-         
-         let body2Attributes: [NSAttributedString.Key: Any] = [
-             .foregroundColor: UIColor.black,
-             .font: UIFont.body2!
-         ]
-         
-         let attributedRoverText = NSMutableAttributedString(string: "Rover: ", attributes: grayAttributes)
-         let attributedCameraText = NSMutableAttributedString(string: "Camera: ", attributes: grayAttributes)
-         let attributedDateText = NSMutableAttributedString(string: "Date: ", attributes: grayAttributes)
-         
-         attributedRoverText.append(NSAttributedString(string: roverText, attributes: body2Attributes))
-         attributedCameraText.append(NSAttributedString(string: cameraText, attributes: body2Attributes))
-         attributedDateText.append(NSAttributedString(string: dateText, attributes: body2Attributes))
+        let grayAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.gray,
+            .font: UIFont.systemFont(ofSize: 15, weight: .regular)
+        ]
         
-         roverLabel.attributedText = attributedRoverText
-         cameraLabel.attributedText = attributedCameraText
-         dateLabel.attributedText = attributedDateText
+        let body2Attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.black,
+            .font: UIFont.body2!
+        ]
+        
+        let attributedRoverText = NSMutableAttributedString(string: "Rover: ", attributes: grayAttributes)
+        let attributedCameraText = NSMutableAttributedString(string: "Camera: ", attributes: grayAttributes)
+        let attributedDateText = NSMutableAttributedString(string: "Date: ", attributes: grayAttributes)
+        
+        attributedRoverText.append(NSAttributedString(string: roverText, attributes: body2Attributes))
+        attributedCameraText.append(NSAttributedString(string: cameraText, attributes: body2Attributes))
+        attributedDateText.append(NSAttributedString(string: dateText, attributes: body2Attributes))
+        
+        roverLabel.attributedText = attributedRoverText
+        cameraLabel.attributedText = attributedCameraText
+        dateLabel.attributedText = attributedDateText
     }
 }
 
@@ -133,17 +121,17 @@ private extension HistoryTableViewCell {
         }
         roverLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(filterLabel.snp.bottom).inset(6)
+            $0.top.equalTo(filterLabel.snp.bottom).offset(6)
         }
         
         cameraLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(roverLabel.snp.bottom).inset(6)
+            $0.top.equalTo(roverLabel.snp.bottom).offset(6)
         }
         
         dateLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(cameraLabel.snp.bottom).inset(6)
+            $0.top.equalTo(cameraLabel.snp.bottom).offset(6)
         }
     }
 }
